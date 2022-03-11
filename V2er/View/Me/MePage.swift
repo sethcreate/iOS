@@ -24,6 +24,7 @@ struct MePage: BaseHomePageView {
             VStack(spacing: 0) {
                 topBannerView
                 sectionViews
+                sponsorView
             }
         }
         .background(Color.bgColor)
@@ -47,7 +48,9 @@ struct MePage: BaseHomePageView {
                 }
                 .greedyFrame()
                 .background(Color.dim)
+                .opacity(0.0)
             }
+
         }
         .hide(selecedTab != .me)
     }
@@ -103,13 +106,30 @@ struct MePage: BaseHomePageView {
             SectionItemView("设置", icon: "gearshape", showDivider: false)
                 .padding(.top, 8)
                 .to { SettingsPage() }
-
-            SectionItemView("More Product", icon: "gearshape", showDivider: false)
-                .padding(.top, 8)
-                .to { SettingsPage() }
         }
     }
-    
+
+    @ViewBuilder
+    private var sponsorView: some View {
+//        Button {
+//
+//        } label: {
+            HStack {
+                Image("sponsor")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30)
+                Text("Sponsor")
+                    .font(.title2)
+            }
+            .padding()
+            .cornerBorder(radius: 18, borderWidth: 0.4, color: .gray)
+            .padding(.top, 30)
+            .to {
+                SponsorPage()
+            }
+    }
+
 }
 
 

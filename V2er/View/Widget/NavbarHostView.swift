@@ -25,6 +25,7 @@ struct NavbarHostView<Content: View>: View {
             HStack(alignment: .center, spacing: 0) {
                 self.content
             }
+            .padding(.vertical, 5)
             .greedyWidth()
             Divider()
                 .opacity(hideDivider ? 0.0 : 1.0)
@@ -116,6 +117,7 @@ struct NavBarModifier: ViewModifier {
                     NavbarTitleView {
                         Text(title)
                             .font(.headline)
+                            .padding(.vertical, 16)
                     } onBackPressed: {
                         dismiss()
                     }

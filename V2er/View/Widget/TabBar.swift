@@ -33,10 +33,11 @@ struct TabBar: View {
                     Button {
                         dispatch(TabbarClickAction(selectedTab: tab.id))
                     } label: {
-                        VStack (spacing: 0) {
+                        VStack (spacing: 1) {
                             Color(self.selectedTab == tab.id ? "indictor" : "clear")
                                 .frame(height: 3)
-                                .cornerRadius(0)
+                                .cornerRadius(1.0)
+                                .opacity(0.9)
                             Image(tab.icon)
                                 .resizable()
                                 .scaledToFit()
