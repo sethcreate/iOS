@@ -28,7 +28,7 @@ struct SponsorPage: View {
                                 .foregroundColor(.gray)
                         }
                     }
-                    .padding(.vertical, 6)
+                    .padding(.vertical, 8)
                 }
             }
 //            .headerProminence(.increased)
