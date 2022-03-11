@@ -198,7 +198,9 @@ struct FeedDetailInfo: BaseModel {
             }
 
             static func == (lhs: Self, rhs: Self) -> Bool {
-                lhs.floor == rhs.floor
+                lhs.floor == rhs.floor &&
+                lhs.hadThanked == rhs.hadThanked &&
+                lhs.love == rhs.love
             }
 
             func hash(into hasher: inout Hasher) {
@@ -220,7 +222,7 @@ struct FeedDetailInfo: BaseModel {
                 love = root.pick("span.small.fade:has(img)")
                 hadThanked = root.pick("div.thank_area.thanked")
                     .notEmpty()
-                replyId = root.value(.id)
+                replyId = root.value(.id).remove("r_")
             }
         }
 

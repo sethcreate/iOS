@@ -103,6 +103,10 @@ struct MePage: BaseHomePageView {
             SectionItemView("设置", icon: "gearshape", showDivider: false)
                 .padding(.top, 8)
                 .to { SettingsPage() }
+
+            SectionItemView("More Product", icon: "gearshape", showDivider: false)
+                .padding(.top, 8)
+                .to { SettingsPage() }
         }
     }
     

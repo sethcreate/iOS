@@ -63,8 +63,9 @@ struct APIService {
 
     func post<T: BaseModel>(endpoint: Endpoint,
                             _ params: Params? = nil,
-                            requestHeaders: Params? = nil) async -> APIResult<T> {
-        let rawResult = await post(endpoint: endpoint, params: params, requestHeaders: requestHeaders)
+                            requestHeaders: Params? = nil,
+                            queries: Params? = nil) async -> APIResult<T> {
+        let rawResult = await post(endpoint: endpoint, params: params, requestHeaders: requestHeaders, queries: queries)
         guard rawResult.error == nil else {
             return .failure(rawResult.error!)
         }
@@ -73,6 +74,7 @@ struct APIService {
             log("error: \(String(describing: result.model?.rawData))")
             return .failure(result.error!)
         }
+        log("----------error: \(String(describing: result.model?.rawData))")
         log("post.Result: \(result)")
         return .success(result.model)
     }
@@ -122,10 +124,21 @@ struct APIService {
 
     private func post(endpoint: Endpoint,
                       params: Params? = nil,
-                      requestHeaders: Params? = nil) async -> RawResult {
+                      requestHeaders: Params? = nil,
+                      queries: Params? = nil) async -> RawResult {
         printCookies()
         let url = endpoint.url
-        let componets = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+        var componets = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+        if let queries = queries {
+            for (_, value) in queries.enumerated() {
+                if componets.queryItems == nil {
+                    componets.queryItems = []
+                }
+                print("value: \(value.key), \(value.value)")
+                componets.queryItems?.append(URLQueryItem(name: value.key, value: value.value))
+            }
+        }
+
         var request = URLRequest(url: componets.url!)
         request.httpMethod = "POST"
         request.addValue(endpoint.ua().value(), forHTTPHeaderField: UA.key)

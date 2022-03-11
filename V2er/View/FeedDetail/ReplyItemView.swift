@@ -12,6 +12,7 @@ import Atributika
 
 struct ReplyItemView: View {
     var info: FeedDetailInfo.ReplyInfo.Item
+    var instanceId: String
 
     var body: some View {
         HStack(alignment: .top) {
@@ -34,7 +35,16 @@ struct ReplyItemView: View {
                             .font(.caption2)
                     }
                     Spacer()
-                    //                    Image(systemName: "heart")
+                    Button {
+                        // sendThanks
+                        dispatch(FeedDetailActions.ThanksReplier(id: instanceId, replyId: info.replyId, floor: info.floor))
+                    } label: {
+                        Image(systemName: info.hadThanked ? "heart.fill" : "heart")
+                    }
+                    .disabled(info.hadThanked)
+
+                    Text(info.love)
+                        .font(.footnote)
                 }
                 RichText { info.content }
                 Text("\(info.floor)楼")

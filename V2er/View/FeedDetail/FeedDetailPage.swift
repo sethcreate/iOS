@@ -257,7 +257,7 @@ struct FeedDetailPage: StateView, KeyboardReadable, InstanceIdentifiable {
     private var replayListView: some View {
         LazyVStack(spacing: 0) {
             ForEach(state.model.replyInfo.items) { item in
-                ReplyItemView(info: item)
+                ReplyItemView(info: item, instanceId: instanceId)
             }
         }
     }

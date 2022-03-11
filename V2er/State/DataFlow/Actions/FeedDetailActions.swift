@@ -111,6 +111,47 @@ struct FeedDetailActions {
         let success: Bool
     }
 
+    struct ThanksReplier: AwaitAction {
+        var target: Reducer = R
+
+        var id: String
+        var replyId: String
+        var floor: Int
+
+        func execute(in store: Store) async {
+            Toast.show("发送中")
+            let state = store.appState.feedDetailStates[id]
+            let once = state?.model.once
+
+            let step1Result: APIResult<SimpleModel> = await APIService.shared
+                .post(endpoint: .thanksReply(id: replyId), queries: ["once": once!])
+
+            var success: Bool = false
+            var toast = "感谢发送失败"
+            if case let .success(step1Mode) = step1Result {
+                if step1Mode!.isValid() {
+                    let step2Result: APIResult<SimpleModel> = await APIService.shared
+                        .post(endpoint: .sendMoney)
+                    if case let .success(step2Result) = step2Result  {
+                        if step2Result!.isValid() {
+                            toast = "感谢发送成功"
+                            success = true
+                        }
+                    }
+                }
+            }
+            dispatch(ThanksReplierDone(id: id, floor: floor, success: success))
+        }
+
+    }
+
+    struct ThanksReplierDone: Action {
+        var target: Reducer = R
+        var id: String
+        var floor: Int
+        let success: Bool
+    }
+
     struct IgnoreTopic: AwaitAction {
         var target: Reducer = R
         var id: String
